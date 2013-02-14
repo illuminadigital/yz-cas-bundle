@@ -29,7 +29,7 @@ class CasView implements \Iterator
     
     public function rewind() 
     {
-        if ( ! is_array($this->viewData)) {
+        if ( ! is_array($this->viewData) && ! is_object($this->viewData)) {
             return;
         }
         
@@ -38,7 +38,7 @@ class CasView implements \Iterator
     
     public function current()
     {
-        if ( ! is_array($this->viewData)) {
+        if ( ! is_array($this->viewData) && ! is_object($this->viewData)) {
             return;
         }
         
@@ -47,7 +47,7 @@ class CasView implements \Iterator
     
     public function key()
     {
-        if ( ! is_array($this->viewData)) {
+        if ( ! is_array($this->viewData) && ! is_object($this->viewData)) {
             return;
         }
         
@@ -56,7 +56,7 @@ class CasView implements \Iterator
     
     public function next()
     {
-        if ( ! is_array($this->viewData)) {
+        if ( ! is_array($this->viewData) && ! is_object($this->viewData)) {
             return;
         }
         
@@ -65,7 +65,7 @@ class CasView implements \Iterator
     
     public function valid()
     {
-        if ( ! is_array($this->viewData)) {
+        if ( ! is_array($this->viewData) && ! is_object($this->viewData)) {
             return;
         }
         
@@ -79,7 +79,7 @@ class CasView implements \Iterator
     public function __get($key)
     {
         //error_log('In __get looking for ' . $key);
-        if (isset($this->$key)) {
+        if (property_exists($this, $key)) {
             return $this->$key;
         } else if (is_object($this->viewData) && isset($this->viewData->$key)) {
             return $this->viewData->$key;
@@ -87,14 +87,23 @@ class CasView implements \Iterator
             return $this->viewData[$key];
         }
         
-        //var_dump('__get miss: ' . $key);
-        /*
         $trace = debug_backtrace();
         trigger_error(
             'Undefined property via __get(): ' . $key . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'],
             E_USER_NOTICE);
-        */
         return null;
+    }
+    
+    public function __isset($key)
+    {
+        //error_log('In __isset looking for ' . $key);
+        if (is_object($this->viewData) && isset($this->viewData->$key)) {
+            return $this->viewData->$key;
+        } else if (is_array($this->viewData) && array_key_exists($key, $this->viewData)) {
+            return $this->viewData[$key];
+        }
+    
+        return FALSE;
     }
     
     public function __call($name, $args)
