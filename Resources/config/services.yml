@@ -1,0 +1,24 @@
+services:
+    Cas.ContentRetriever:
+        class:      Illumina\CasBundle\DependencyInjection\ContentRetrieverService
+        arguments:
+            -       %illumina_cas.server_url%
+            -       %illumina_cas.key%
+            -       %illumina_cas.secret%
+            -       %illumina_cas.site%
+            
+    Cas.TwigRenderer:
+        class:      Illumina\CasBundle\Twig\CasRenderer
+        arguments:
+            -       @Cas.TwigRendererEngine
+            
+    Cas.TwigRendererEngine:
+        class:      Illumina\CasBundle\Twig\CasRendererEngine
+            
+    Cas.TwigExtension:
+        class:      Illumina\CasBundle\Twig\Extension\CasExtension
+        arguments:
+            -       @Cas.TwigRenderer
+            -       @service_container
+        tags:
+            -       { name: twig.extension }

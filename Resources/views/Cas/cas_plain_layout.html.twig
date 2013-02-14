@@ -1,0 +1,15 @@
+{% block cas_link_entry %}
+        <a href="{{ link.link_url }}" title="{{ link.link_title }}" target="{{ link.attribute_target }}">{{ link.title }}</a>
+{% endblock %}
+
+{% block cas_link_row %}
+    <li>
+        {{ cas_link_entry(link) }}
+    </li>
+{% endblock %}
+
+{% block cas_link_rows %}
+    {% for link in links %}
+        {{ cas_link_row(link) }}
+    {% endfor %}
+{% endblock %}
