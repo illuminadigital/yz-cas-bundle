@@ -35,9 +35,9 @@ class CasExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'cas_link_entry' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'cas_link_rows' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
-            'cas_link_row' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
+            //'cas_link_entry' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
+            //'cas_link_rows' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
+            //'cas_link_row' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
             'cas_links' => new \Twig_SimpleFunction('cas_links', array($this, 'links')),
         );
     }

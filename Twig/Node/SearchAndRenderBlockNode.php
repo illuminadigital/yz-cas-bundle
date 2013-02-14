@@ -5,8 +5,6 @@ class SearchAndRenderBlockNode extends \Twig_Node_Expression_Function
 {
     public function compile(\Twig_Compiler $compiler)
     {
-        parent::compile($compiler);
-        
         $compiler
             ->addDebugInfo($this)
             ->raw('$this->env->getExtension(\'cas\')->renderer->searchAndRenderBlock(');
@@ -16,11 +14,6 @@ class SearchAndRenderBlockNode extends \Twig_Node_Expression_Function
         $arguments = iterator_to_array($this->getNode('arguments'));
         $blockNameSuffix = $matches[1];
         
-        error_log ('Compiling search and render block:');
-        error_log(print_r($blockNameSuffix, TRUE));
-        error_log(print_r($arguments, TRUE));
-        error_log($this->toXml());
-        
         $compiler->subcompile($arguments[0]);
         $compiler->raw(', \'' . $blockNameSuffix . '\'');
 
@@ -29,7 +22,8 @@ class SearchAndRenderBlockNode extends \Twig_Node_Expression_Function
 //        $compiler->raw(', ');
 //        $compiler->subcompile($variables);
         
-/*        if (isset($arguments[0])) {
+/*
+          if (isset($arguments[0])) {
             $compiler->subcompile($arguments[0]);
             $compiler->raw(', \'' . $blockNameSuffix . '\'');
             
@@ -42,7 +36,7 @@ class SearchAndRenderBlockNode extends \Twig_Node_Expression_Function
                 $compiler->subcompile($variables);
             }
         }
-            */
+*/
         
         $compiler->raw(")\n");
     }
