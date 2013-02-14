@@ -1,30 +1,48 @@
 <?php
 namespace Illumina\CasBundle\Twig;
 
-class CasView implements \Iterator
+class CasView implements \Iterator, \ArrayAccess
 {
     protected $viewData;
     protected $vars;
     
-    public function __construct($viewData, array $vars = array()) {
+    public function __construct($viewData, $vars = NULL) {
         $this->viewData = $viewData;
         
+        if ($vars == NULL) {
+            $vars = array();
+        }
+
+        if (isset($vars['area'])) {
+            $block_prefix = sprintf('cas_%s_%s_%s', $vars['area'], $vars['type'], $vars['subtype']); 
+            $block_prefixes = array(
+                $block_prefix,    
+                sprintf('cas_%s_%s', $vars['type'], $vars['subtype']),
+                sprintf('cas_%s', $vars['subtype']),
+                'cas', 
+            );
+        } else {
+            $block_prefix = 'cas';
+            $block_prefixes = array(
+                'cas',
+            );        
+        }
+        
         $defaultVars = array(
-             'block_prefix' => sprintf('%s_%s_%s', $vars['area'], $vars['type'], $vars['subtype']),
-             'block_prefixes' => array(
-                 //sprintf('cas_%s_%s_%s_link', $vars['area'], $vars['type'], $vars['subtype']),
-                 //sprintf('cas_%s_%s_link', $vars['type'], $vars['subtype']),
-                 //sprintf('cas_%s_link', $vars['subtype']),
-                 //'cas_link', 
-                 sprintf('cas_%s_%s_%s', $vars['area'], $vars['type'], $vars['subtype']),
-                 sprintf('cas_%s_%s', $vars['type'], $vars['subtype']),
-                 sprintf('cas_%s', $vars['subtype']),
-                 'cas', 
-             ),
-             'cache_key' => 'foo',
+            'block_prefix' => $block_prefix,
+            'block_prefixes' => $block_prefixes, 
+            'cache_key' => 'foo',
+            'links' => array(
+                 array('link_url' => 'foo', 'title' => 'bar'),
+            ),
         );
         
-        $this->vars = array_merge($defaultVars, $vars);
+        $this->vars = $vars;
+        foreach ($defaultVars as $key => $value) {
+            if (empty($this->vars[$key])) {
+                $this->vars[$key] = $value;
+            }
+        }
     }
     
     public function rewind() 
@@ -80,11 +98,12 @@ class CasView implements \Iterator
     {
         //error_log('In __get looking for ' . $key);
         if (property_exists($this, $key)) {
+            // return new CasView($this->$key, $this->vars);
             return $this->$key;
         } else if (is_object($this->viewData) && isset($this->viewData->$key)) {
             return $this->viewData->$key;
         } else if (is_array($this->viewData) && array_key_exists($key, $this->viewData)) {
-            return $this->viewData[$key];
+            return new CasView($this->viewData[$key], $this->vars);
         }
         
         $trace = debug_backtrace();
@@ -92,6 +111,17 @@ class CasView implements \Iterator
             'Undefined property via __get(): ' . $key . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'],
             E_USER_NOTICE);
         return null;
+    }
+    
+    public function __set($key, $value) 
+    {
+        if (is_array($this->vars)) {
+            $this->vars[$key] = $value;
+        } else if (is_object($this->vars)) {
+            $this->vars->$key = $value;
+        } else {
+            $this->$key = $value;
+        }
     }
     
     public function __isset($key)
@@ -115,5 +145,35 @@ class CasView implements \Iterator
         }
         
         return FALSE;
+    }
+    
+    public function offsetExists($offset) 
+    {
+        return $this->__isset($offset);
+    }
+    
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset);
+    }
+    
+    public function offsetSet($offset, $value)
+    {
+        $this->__set($offset, $value);
+    }
+    
+    public function offsetUnset($offset)
+    {
+        // undefined
+    }
+    
+    public function __toString()
+    {
+        try {
+            return (string) $this->viewData;
+        }
+        catch (Exception $e) {
+            return '';
+        }
     }
 }

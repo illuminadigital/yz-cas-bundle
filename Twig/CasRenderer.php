@@ -182,11 +182,6 @@ class CasRenderer
             $variables['attr'] = array_replace($scopeVariables['attr'], $variables['attr']);
         }
     
-    // Merge the passed with the exist *label* attributes
-        if (isset($variables['label_attr']) && isset($scopeVariables['label_attr'])) {
-            $variables['label_attr'] = array_replace($scopeVariables['label_attr'], $variables['label_attr']);
-        }
-    
         // Do not use array_replace_recursive(), otherwise array variables
         // cannot be overwritten
         $variables = array_replace($scopeVariables, $variables);

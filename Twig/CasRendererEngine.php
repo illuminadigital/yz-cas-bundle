@@ -190,28 +190,9 @@ class CasRendererEngine
             }
         }
 
-        // Check the default themes once we reach the root view without success
-        if (!$view->parent) {
-            for ($i = count($this->defaultThemes) - 1; $i >= 0; --$i) {
-                $this->loadResourcesFromTheme($cacheKey, $this->defaultThemes[$i]);
-                // CONTINUE LOADING (see doc comment)
-            }
-        }
-
-        // Proceed with the themes of the parent view
-        if ($view->parent) {
-            $parentCacheKey = $view->parent->vars[self::CACHE_KEY_VAR];
-
-            if (!isset($this->resources[$parentCacheKey])) {
-                $this->loadResourceForBlockName($parentCacheKey, $view->parent, $blockName);
-            }
-
-            // EAGER CACHE POPULATION (see doc comment)
-            foreach ($this->resources[$parentCacheKey] as $nestedBlockName => $resource) {
-                if (!isset($this->resources[$cacheKey][$nestedBlockName])) {
-                    $this->resources[$cacheKey][$nestedBlockName] = $resource;
-                }
-            }
+        for ($i = count($this->defaultThemes) - 1; $i >= 0; --$i) {
+            $this->loadResourcesFromTheme($cacheKey, $this->defaultThemes[$i]);
+            // CONTINUE LOADING (see doc comment)
         }
 
         // Even though we loaded the themes, it can happen that none of them

@@ -1,0 +1,7 @@
+{# {% extends 'IlluminaCasBundle:Cas:cas_plain_layout.html.twig' %} #}
+
+{% block cas_link_entry %}
+        <a href="{{ link.link_url }}" title="{{ link.link_title }}" target="{{ link.attribute_target }}"><img src="{{ link.url_image }}"></a>
+        <a href="{{ link.link_url }}" title="{{ link.link_title }}" target="{{ link.attribute_target }}">{{ link.title }}</a>
+{% endblock %}
+
