@@ -54,11 +54,14 @@ class ContentRetrieverService
     
     public function retrieveList($area, $subtype, $type = 'views', $args = array(), $site = NULL)
     {
-        $url = sprintf('%scontent/%s/%s', $this->serverUrl, $type, $subtype);
+        $url = sprintf('%scontent/%s', $this->serverUrl, $subtype);
         $params = array(
-            'args[0]' => ( empty($site) ? $this->site : site),
-            'args[1]' => $area,
+            'args[0]' => (empty($site) ? $this->site : $site),
         );
+
+        if (!empty($area)){
+            $params['args[1]'] = $area;
+        }
         
         if ( ! empty($args) ) {
             $counter = 2;
