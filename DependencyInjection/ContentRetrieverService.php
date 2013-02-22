@@ -116,8 +116,12 @@ class ContentRetrieverService
         // If we get an array rather than an object, return the item itself
         if ( is_array($result) ) {
             $result = array_shift($result);
+            
+        // Or if it looks like the wrapper structure
+        } else if ( isset($result->results) && isset($result->num_rows) ) {
+            $result = array_shift($result->results);
         }
-        
+    
         return $result;
     }
 }

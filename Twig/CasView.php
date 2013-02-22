@@ -7,12 +7,17 @@ class CasView implements \Iterator, \ArrayAccess
     protected $vars;
     
     public function __construct($viewData, $vars = NULL) {
-        $this->viewData = $viewData;
-        
         if ($vars == NULL) {
             $vars = array();
         }
-
+        
+        if (is_object($viewData) && isset($viewData->results) && isset($viewData->num_rows)) {
+            $this->viewData = $viewData->results;
+            $this->numItems = $viewData->num_rows;
+        } else {
+            $this->viewData = $viewData;
+        }
+        
         if (isset($vars['area'])) {
             $block_prefix = sprintf('cas_%s_%s', $vars['area'], $vars['type']); 
             $block_prefixes = array(
