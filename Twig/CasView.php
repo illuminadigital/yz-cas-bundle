@@ -14,11 +14,10 @@ class CasView implements \Iterator, \ArrayAccess
         }
 
         if (isset($vars['area'])) {
-            $block_prefix = sprintf('cas_%s_%s_%s', $vars['area'], $vars['type'], $vars['subtype']); 
+            $block_prefix = sprintf('cas_%s_%s', $vars['area'], $vars['type']); 
             $block_prefixes = array(
                 $block_prefix,    
-                sprintf('cas_%s_%s', $vars['type'], $vars['subtype']),
-                sprintf('cas_%s', $vars['subtype']),
+                sprintf('cas_%s', $vars['type']),
                 'cas', 
             );
         } else {

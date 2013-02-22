@@ -39,6 +39,7 @@ class CasExtension extends \Twig_Extension
 //            'cas_link_rows' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
 //            'cas_link_row' => new \Twig_Function_Node('Illumina\\CasBundle\\Twig\\Node\\SearchAndRenderBlockNode', array('is_safe' => array('html'))),
             'cas_links' => new \Twig_SimpleFunction('cas_links', array($this, 'links')),
+            'cas_item' => new \Twig_SimpleFunction('cas_item', array($this, 'content')),
         );
     }
     
@@ -47,18 +48,25 @@ class CasExtension extends \Twig_Extension
         return 'cas';
     }
     
-    public function links($area, $subtype, $type = 'views', $args = array())
+    public function links($type, $area = NULL, $args = array())
     {
         $retriever = $this->container->get('cas.contentretriever');
         
-        $list = $retriever->retrieveList($area, $subtype, $type, $args);
+        $list = $retriever->retrieveList($type, $area, $args);
         
-        $context = array('area' => $area, 'subtype' => $subtype, 'type' => $type);
-        
-#        foreach ($list as $key => $listItem) {
-#            $list[$key] = new CasView($listItem, new CasView($context, array()));
-#        }
-        
+        $context = array('type' => $type, 'area' => $area);
+                
         return new CasView($list, $context);
+    }
+    
+    public function content($type, $area = NULL, $args = array())
+    {
+        $retriever = $this->container->get('cas.contentretriever');
+        
+        $item = $retriever->retrieveContent($type, $area, $args);
+        
+        $context = array('type' => $type, 'area' => $area);
+        
+        return new CasView($item, $context);
     }
 }
