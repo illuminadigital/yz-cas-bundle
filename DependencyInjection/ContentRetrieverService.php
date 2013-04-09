@@ -42,7 +42,7 @@ class ContentRetrieverService
             {
                 $curl_options = array_merge($curl_options, $options);
             }
-            
+
             $result = $request->doRequest(0, $curl_options);
             
             return json_decode($result['body']);
@@ -55,7 +55,7 @@ class ContentRetrieverService
     protected function buildURL($type, $area = NULL, $args = array(), $site = NULL)
     {
         $url = sprintf('%scontent/%s', $this->serverUrl, $type);
-        
+
         return $url;
     }
     
