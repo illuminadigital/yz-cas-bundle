@@ -6,7 +6,13 @@ services:
             -       %illumina_cas.key%
             -       %illumina_cas.secret%
             -       %illumina_cas.site%
-            
+
+
+    casVocabulary:
+            class:    Illumina\CasBundle\DependencyInjection\CasVocabulary
+            arguments:
+                - @Cas.ContentRetriever
+
     Cas.TwigRenderer:
         class:      Illumina\CasBundle\Twig\CasRenderer
         arguments:
