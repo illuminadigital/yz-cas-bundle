@@ -23,12 +23,14 @@ class CasVocabulary extends BaseVocabulary
 
             $vocabulary = array();
 
-            foreach($data->results as $term ){
+            if($data){
 
-                $vocabulary[$term->taxonomy_term_data_name] = $term->taxonomy_term_data_description;
+                foreach($data->results as $term ){
 
+                    $vocabulary[$term->taxonomy_term_data_name] = $term->taxonomy_term_data_description;
+
+                }
             }
-
             self::$vocabularies[$key] = $vocabulary;
 
         }
