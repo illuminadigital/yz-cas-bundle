@@ -68,7 +68,19 @@ class ContentRetrieverService
         if ( ! empty($area)){
             $params['args[1]'] = $area;
         }
-        
+
+        if( ! empty ($args['filters']) ){
+
+            $i=2;
+
+            foreach($args['filters'] as $extraFilter){
+
+                $params['args['.$i.']']  = $extraFilter;
+                $i++;
+            }
+
+        }
+
         if ( ! empty($args['page']) && $args['page'] > 1) {
             $numItems = ( ! empty($args['numItems']) ? (int) $args['numItems'] : 20 );
             $page = (int) $args['page'] - 1;
@@ -99,7 +111,7 @@ class ContentRetrieverService
     {
         $url = $this->buildURL($type, $area, $args, $site);
         $params = $this->buildParams($type, $area, $args, $site);
-        
+
         return $this->sendRequest($url, $params);
     }
     
