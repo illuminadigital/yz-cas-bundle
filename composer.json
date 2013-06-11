@@ -1,7 +1,7 @@
 {
 	"name": "illuminadigital/yz-cas-bundle",
 	"type": "symfony-bundle",
-	"description": "Integration with Drupal-based content providers"
+	"description": "Integration with Drupal-based content providers",
 	"require": {
 	    "symfony/framework-bundle": "~2.0",
 	    "oauth-php/oauth-php": "*"
