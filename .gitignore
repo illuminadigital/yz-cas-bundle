@@ -1,0 +1,13 @@
+/web/bundles/
+/app/bootstrap*
+/app/cache/*
+/app/logs/*
+/vendor/
+/app/config/parameters.yml
+*~
+/.settings
+/.buildpath
+/.project
+/.idea
+.DS_Store
+._.DS_Store

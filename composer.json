@@ -1,0 +1,33 @@
+{
+	"name": "illuminadigital/yz-cas-bundle",
+	"type": "symfony-bundle",
+	"description": "Integration with Drupal-based content providers"
+	"require": {
+	    "symfony/framework-bundle": "~2.0",
+	    "oauth-php/oauth-php": "*"
+	},
+	"autoload": {
+	    "psr-0": {
+	        "Illumina\\CasBundle": ""
+	    }
+	},
+	"minimum-stability": "dev",
+	"repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "oauth-php/oauth-php",
+                "version": "157",
+                "source": {
+                    "url": "http://oauth-php.googlecode.com/svn/",
+                    "type": "svn",
+                    "reference": "trunk/"
+                },
+                "autoload": {
+                    "classmap": ["library/"]
+                }
+            }
+        }
+	]
+}
+	
