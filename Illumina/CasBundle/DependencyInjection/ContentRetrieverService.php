@@ -22,6 +22,7 @@ class ContentRetrieverService
         $options = array(
             'consumer_key' => $key,
             'consumer_secret' => $secret,
+            'token_secret' => '',
         );
         
         \OAuthStore::instance("2Leg", $options);
