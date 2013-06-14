@@ -1,6 +1,8 @@
 <?php
 namespace Illumina\CasBundle\Twig;
 
+use Symfony\Component\Form\Exception\NotValidException;
+
 class CasRenderer
 {
     const CACHE_KEY_VAR = 'block_prefix'; //cas_block_prefix';
@@ -48,7 +50,7 @@ class CasRenderer
     public function renderBlock(CasView $view, $blockName, array $variables = array())
     {
         if (0 == count($this->variableStack)) {
-            throw new FormException('This method should only be called while rendering a form element.');
+            throw new NotValidException('This method should only be called while rendering a form element.');
         }
     
         $viewCacheKey = $view->vars[self::CACHE_KEY_VAR];
@@ -57,7 +59,7 @@ class CasRenderer
         $resource = $this->engine->getResourceForBlockName($view, $blockName);
     
         if (!$resource) {
-            throw new FormException(sprintf('No block "%s" found while rendering the form.', $blockName));
+            throw new NotValidException(sprintf('No block "%s" found while rendering the form.', $blockName));
         }
     
         // Merge the passed with the existing attributes
