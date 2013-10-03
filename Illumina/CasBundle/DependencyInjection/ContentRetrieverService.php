@@ -104,7 +104,7 @@ class ContentRetrieverService
                 $params[$key] = $arg;
             }
         }
-        
+        unset($params['filters']);
         return $params;
     }
     
