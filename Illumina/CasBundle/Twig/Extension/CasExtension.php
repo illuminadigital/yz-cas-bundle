@@ -48,12 +48,14 @@ class CasExtension extends \Twig_Extension
         return 'cas';
     }
     
-    public function links($type, $area = NULL, $args = array())
+    public function links($type, $area = NULL, $args = array(), $random=false)
     {
         $retriever = $this->container->get('cas.contentretriever');
         
         $list = $retriever->retrieveList($type, $area, $args);
-        
+        if($random){
+            shuffle($list->results);
+        }
         $context = array('type' => $type, 'area' => $area);
                 
         return new CasView($list, $context);
